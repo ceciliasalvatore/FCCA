@@ -58,13 +58,13 @@ def compress(x_init, y_init, features_categories):
                 count += np.min(cc)
             y_collapsed.append(yy[np.argmax(cc)])
             j += 1
-    duplicate_rate = count/len(x)
+    inconsistency_rate = count/len(x)
 
     x_compressed = x[u, :]
     r = len(x_compressed) / len(x_init)
     compression_rate = 1 - r
 
-    return x, y, duplicate_rate, compression_rate
+    return x, y, inconsistency_rate, compression_rate
 
 
 def computeThresholds(x0, xCE, eps):
@@ -129,12 +129,12 @@ def FCCA(dataset, TS):
 
         features_categories, features_boundaries = discretization_parameters(dataset.x_tr.shape[1], FrequentThresholds)
 
-        x_tr_discretized, y_tr_discretized, duplicate_rate_tr, compression_rate_tr = compress(dataset.x_tr, dataset.y_tr, features_categories)
-        x_ts_discretized, y_ts_discretized, duplicate_rate_ts, compression_rate_ts = compress(dataset.x_ts, dataset.y_ts, features_categories)
+        x_tr_discretized, y_tr_discretized, inconsistency_rate_tr, compression_rate_tr = compress(dataset.x_tr, dataset.y_tr, features_categories)
+        x_ts_discretized, y_ts_discretized, inconsistency_rate_ts, compression_rate_ts = compress(dataset.x_ts, dataset.y_ts, features_categories)
 
         discretized_model = DecisionTreeClassifier(max_depth=cfg.d)
         discretized_model.fit(x_tr_discretized, y_tr_discretized)
-        discretized_performance[quantile_level] = Performance(discretized_model, compression_rate_ts, duplicate_rate_ts)
+        discretized_performance[quantile_level] = Performance(discretized_model, compression_rate_ts, inconsistency_rate_ts)
         discretized_performance[quantile_level].evaluate(x_ts_discretized, y_ts_discretized)
         discretized_performance[quantile_level].features_used = np.array([i for i in range(len(features_categories)) if features_categories[i]!=[]])[discretized_performance[quantile_level].features_used]
     return Thresholds, baseline_performance, discretized_performance

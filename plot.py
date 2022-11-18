@@ -43,12 +43,12 @@ def plot_type(type, discretized_performance, baseline_performance=None, TS_perfo
     plt.close(fig)
 
 
-def plot_compression_duplicates(discretized_performance, seed=False):
+def plot_compression_inconsistency(discretized_performance, seed=False):
     compression = getPerformanceValue(discretized_performance, 'compression')
     compression_mean, compression_err = confidence_interval(compression)
 
-    duplicates = getPerformanceValue(discretized_performance, 'duplicates')
-    duplicates_mean, duplicates_err = confidence_interval(duplicates)
+    inconsistency = getPerformanceValue(discretized_performance, 'inconsistency')
+    inconsistency_mean, inconsistency_err = confidence_interval(inconsistency)
 
     color1 = 'firebrick'
     fig,ax1 = plt.subplots()
@@ -60,21 +60,21 @@ def plot_compression_duplicates(discretized_performance, seed=False):
 
     color2 = 'lightseagreen'
     ax2 = ax1.twinx()
-    ax2.plot(cfg.quantiles, duplicates_mean, linestyle='--', marker='o', color=color2, linewidth=3)
-    ax2.fill_between(cfg.quantiles, duplicates_mean - duplicates_err, duplicates_mean + duplicates_err, color=color2, alpha=0.5)
-    ax2.set_ylabel('Duplicates Rate', color=color2)
+    ax2.plot(cfg.quantiles, inconsistency_mean, linestyle='--', marker='o', color=color2, linewidth=3)
+    ax2.fill_between(cfg.quantiles, inconsistency_mean - inconsistency_err, inconsistency_mean + inconsistency_err, color=color2, alpha=0.5)
+    ax2.set_ylabel('Inconsistency Rate', color=color2)
     ax2.tick_params(axis='y', labelcolor=color2)
 
     fig.tight_layout()
 
-    plt.savefig(f"{cfg.getPlotDirectory(seed)}/compression_duplicates.png")
+    plt.savefig(f"{cfg.getPlotDirectory(seed)}/compression_inconsistency.png")
     plt.close(fig)
 
 
 def plot_performance(TS_performance, baseline_performance, discretized_performance, seed=False):
     plot_type('accuracy', discretized_performance, baseline_performance, TS_performance, seed=seed)
     plot_type('n_features', discretized_performance, baseline_performance, seed=seed)
-    plot_compression_duplicates(discretized_performance, seed=seed)
+    plot_compression_inconsistency(discretized_performance, seed=seed)
 
 
 def plot_thresholds_seed(dataset, Thresholds):

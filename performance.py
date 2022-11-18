@@ -25,12 +25,12 @@ def getPerformanceValue(performance_dict, type):
     return values
 
 class Performance:
-    def __init__(self, model, compression=None, duplicates=None):
+    def __init__(self, model, compression=None, inconsistency=None):
         self.model = model
         self.accuracy = None
         self.confusion_matrix = None
         self.compression = compression
-        self.duplicates = duplicates
+        self.inconsistency = inconsistency
 
         if isinstance(model, DecisionTreeClassifier):
             self.features_used = np.unique(model.tree_.feature[model.tree_.feature >= 0])
