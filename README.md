@@ -1,6 +1,6 @@
 # FCCA
 
-This repository contains the experimental code for the paper <a href="https://arxiv.org/abs/2211.09894">Features Compression based on Counterfactual Analysis</a>
+This repository contains the experimental code for the paper <a href="https://arxiv.org/abs/2211.09894">Supervised Feature Compression based on Counterfactual Analysis</a>
 
 ## Installation
 
